@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UserQueryService {
-    @Autowired
-    private lateinit var userRepository: UserRepository;
-
+class UserQueryService(private val userRepository: UserRepository) {
     fun findAll(): List<UserSimpleView> {
         return userRepository.findAll()
                 .map { UserSimpleView(it.lastName, it.firstName, it.email, it.login, ) }

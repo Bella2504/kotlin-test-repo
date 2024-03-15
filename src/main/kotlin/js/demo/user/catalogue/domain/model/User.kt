@@ -1,14 +1,18 @@
 package js.demo.user.catalogue.domain.model
 
 import java.util.UUID
-import javax.persistence.Entity
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 @Entity
-data class User(
+@Table(name="CatalogueUser")
+class User(
+        @Id
         val userId: UUID,
         val lastName: String,
         val firstName: String,
         val email: String,
-        val login: String,
-        val active: Boolean?
+        var login: String,
+        var active: Boolean?
 )
