@@ -5,6 +5,7 @@ import js.demo.user.catalogue.domain.model.User
 import js.demo.user.catalogue.domain.model.command.CreateUserCommand
 import js.demo.user.catalogue.domain.model.command.UpdateUserCommand
 import js.demo.user.catalogue.adapter.persistence.UserRepository
+import js.demo.user.catalogue.api.exceptions.DefaultException
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import java.lang.Exception
@@ -58,7 +59,7 @@ class UserService(private val userRepository: UserRepository) {
                 throw UserNotFoundException("User with id=$id not found")
             }
         } catch (e: Exception){
-            logger.error("Could not remove user=${id}: ${e.message}")
+            throw DefaultException("Could not remove user=${id}: ${e.message}")
         }
     }
 }
