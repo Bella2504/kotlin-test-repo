@@ -1,4 +1,4 @@
-package js.demo.user.catalogue.domain.port
+package js.demo.user.catalogue.adapter.persistence
 
 import js.demo.user.catalogue.domain.model.User
 import org.springframework.data.jpa.repository.JpaRepository

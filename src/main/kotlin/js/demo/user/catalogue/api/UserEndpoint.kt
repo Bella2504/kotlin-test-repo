@@ -1,5 +1,6 @@
 package js.demo.user.catalogue.api
 
+import js.demo.user.catalogue.api.exceptions.DefaultException
 import js.demo.user.catalogue.api.model.CreateUserRequest
 import js.demo.user.catalogue.api.model.UpdateUserRequest
 import js.demo.user.catalogue.domain.UserService
@@ -10,9 +11,12 @@ import js.demo.user.catalogue.query.view.UserSimpleView
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/user")
@@ -21,27 +25,48 @@ class UserEndpoint(val userService: UserService,
 
     @PostMapping
     fun createUser(@RequestBody request: CreateUserRequest) {
-        userService.createUser(CreateUserCommand(
+        try {
+            userService.createUser(CreateUserCommand(
                 lastName = request.lastName,
                 firstName = request.firstName,
                 email = request.email,
                 login = request.login,
-        ))
-    }
+            ))
+        } catch(e: Exception) {
+            throw DefaultException("Error during user creation: ${e.message}")
+        }
 
+    }
 
     @PutMapping
     fun updateUser(@RequestBody request: UpdateUserRequest) {
-        userService.updateUser(UpdateUserCommand(
-            uuid = request.uuid,
-            login = request.login,
-            active = request.active
-        ))
+        try {
+            userService.updateUser(UpdateUserCommand(
+                uuid = request.uuid,
+                login = request.login,
+                active = request.active
+            ))
+        } catch(e: Exception) {
+            throw DefaultException("Error during user update: ${e.message}")
+        }
     }
 
     @GetMapping
     fun findAllUSer(): List<UserSimpleView> {
-        return userQueryService.findAll();
+        try {
+            return userQueryService.findAll();
+        } catch(e: Exception) {
+            throw DefaultException("Error during fetching list of users: ${e.message}")
+        }
+    }
+
+    @DeleteMapping
+    fun deleteUser(@RequestParam id: UUID) {
+        try {
+            userService.deleteUser(id)
+        } catch(e: Exception) {
+            throw DefaultException("Error during user removal: ${e.message}")
+        }
     }
 
 }
