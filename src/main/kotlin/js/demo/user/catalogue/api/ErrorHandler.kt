@@ -42,4 +42,14 @@ class ExceptionControllerAdvice {
         logger.error(e.message)
         return ResponseEntity(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
+
+    @ExceptionHandler(Exception::class)
+    fun handleException(e: Exception): ResponseEntity<ErrorMessageResponse> {
+        val errorMessage = ErrorMessageResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            e.message
+        )
+        logger.error("Unexpected error: ${e.message}")
+        return ResponseEntity(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 }
