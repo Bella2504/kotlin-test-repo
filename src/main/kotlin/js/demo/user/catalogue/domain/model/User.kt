@@ -19,5 +19,5 @@ class User(
         val email: String,
         @NotNull
         var login: String,
-        var active: Boolean?
+        var active: Boolean? = null
 )

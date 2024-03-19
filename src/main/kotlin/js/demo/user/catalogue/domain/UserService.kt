@@ -15,7 +15,7 @@ import java.util.UUID
 @Service
 class UserService(private val userRepository: UserRepository) {
     private val logger = KotlinLogging.logger {}
-    fun createUser(command: CreateUserCommand): UUID {
+    fun createUser(command: CreateUserCommand): User {
         return userRepository.save(User(
                 userId = UUID.randomUUID(),
                 lastName = command.lastName,
@@ -23,7 +23,7 @@ class UserService(private val userRepository: UserRepository) {
                 email = command.email,
                 login = command.login,
                 active = null
-        )).userId
+        ))
     }
 
     /**
